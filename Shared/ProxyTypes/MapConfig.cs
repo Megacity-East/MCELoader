@@ -45,6 +45,6 @@ public class MapConfig
     public float carSpawnRateFactor; //Field offset: 0x110
     public float trucksPercent; //Field offset: 0x118
     public float checkpointSpawnRateFactor; //Field offset: 0x120
-    public CurvePathSerializableData pathDataSerializable; //Field offset: 0x128 //HACK/TODO this is private in the proxied type!!!!!!!!
-    public CurvePathData pathData; //Field offset: 0x150
+    public CurvePathSerializableData pathDataSerializable; //Field offset: 0x128 //HACK/TODO this is private in the proxied type!!!!!!!!, should probably use bepinex publizier??
+    // public CurvePathData pathData; //Field offset: 0x150 // NOTE: CurvePathData has a constructor that takes in CurvePathSerializableData,
 }

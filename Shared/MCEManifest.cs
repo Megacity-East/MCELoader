@@ -21,6 +21,13 @@ public class MCEManifest
     /// <summary> The authors of the map</summary>
     public string[] Authors;
 
-    public string RelativeAssetBundleLocation;
-    public string RelativeSceneBundleLocation;
+    /// <remarks> should be the path to the json for the `MapConfig` </remarks>
+    public string RelativeMapConfigPath;
+    /// <remarks> should be the path to the json for the `Map` </remarks>
+    public string RelativeMapPath;
+
+    /// <remarks> should be the path to the bundle with all the Assets</remarks>
+    public string RelativeAssetBundlePath;
+    /// <remarks> should be the path to the bundle with the Scene</remarks>
+    public string RelativeSceneBundlePath;
 }

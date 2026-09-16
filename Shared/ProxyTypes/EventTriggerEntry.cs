@@ -4,7 +4,7 @@ using Il2CppQuantum;
 #endif
 namespace MCELoader.Shared.ProxyTypes;
 
-#if (UNITY_STANDALONE || UNITY_EDITOR)
+#if MCEEditor
 public enum EventTriggerType
 {
     None = 0,
