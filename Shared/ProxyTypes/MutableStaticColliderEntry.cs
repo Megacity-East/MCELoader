@@ -12,6 +12,9 @@ public enum MutableStaticColliderType
 }
 #endif
 
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.MutableStaticColliderEntry))]
+#endif
 public struct MutableStaticColliderEntry
 {
     public int colliderIndex; //Field offset: 0x0

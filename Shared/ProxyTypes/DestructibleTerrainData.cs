@@ -1,6 +1,9 @@
 
 namespace MCELoader.Shared.ProxyTypes;
 
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.DestructibleTerrainData))]
+#endif
 public struct DestructibleTerrainData
 {
     //    public enum Type
@@ -12,7 +15,7 @@ public struct DestructibleTerrainData
     public int colliderCount; //Field offset: 0x4
     public float mass; //Field offset: 0x8
     public float breakForceSq; //Field offset: 0x10
-    public int type; //Field offset: 0x18 HACK/TODO currently were just gonna make this an int, as its unused but this may not be true in versions post v42
+                               // public int type; //Field offset: 0x18 // HACK/TODO currently were just gonna make this an int, as its unused but this may not be true in versions post v42
 
 }
 

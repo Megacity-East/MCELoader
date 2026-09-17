@@ -4,8 +4,6 @@ using MCELoader.Extensions;
 
 using Il2Cpp;
 using Il2CppQuantum;
-using Il2CppPhoton.Realtime;
-using Il2CppPhoton.Client;
 
 namespace MCELoader.Patches;
 

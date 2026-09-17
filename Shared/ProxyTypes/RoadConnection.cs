@@ -4,9 +4,11 @@ using Il2CppQuantum;
 
 namespace MCELoader.Shared.ProxyTypes;
 
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.RoadConnection))]
+#endif
 public struct RoadConnection
 {
-    public static readonly RoadConnection None; //Field offset: 0x0
     public int connectionIndex; //Field offset: 0x0
     public int otherRoad; //Field offset: 0x4
     public PathDistance myPathDistance; //Field offset: 0x8

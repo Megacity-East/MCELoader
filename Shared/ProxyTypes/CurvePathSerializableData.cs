@@ -1,6 +1,7 @@
 using UnityEngine;
 namespace MCELoader.Shared.ProxyTypes;
 
+[SourceType(typeof(Il2CppQuantum.CurvePathSerializableData))]
 public struct CurvePathSerializableData
 {
     public Vector3[] allPoints; //Field offset: 0x0

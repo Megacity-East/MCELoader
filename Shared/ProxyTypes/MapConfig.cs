@@ -4,6 +4,7 @@ using Il2CppQuantum;
 #endif
 namespace MCELoader.Shared.ProxyTypes;
 
+[SourceType(typeof(Il2CppQuantum.MapConfig))]
 public class MapConfig
 {
 #if MCEEditor

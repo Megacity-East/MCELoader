@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>disable</Nullable>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -21,9 +21,24 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
+
   <ItemGroup>
         <Reference Include="$(ProjectDir)/.ref/*.dll" Private="false" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="$(ProjectDir)/CodeGen/CodeGen.csproj" 
+                      PrivateAssets="all"
+                      ReferenceOutputAssembly="false"
+                      OutputItemType="Analyzer"
+                      SetTargetFramework="TargetFramework=netstandard2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="$(ProjectDir)/CodeGen/**" />
+    <Compile Remove="$(ProjectDir)/CodeGen/**" />
+    <EmbeddedResource Remove="$(ProjectDir)/CodeGen/**" />
+    <None Remove="$(ProjectDir)/CodeGen/**" />
+  </ItemGroup>
 
 </Project>

@@ -5,6 +5,9 @@ namespace MCELoader.Shared.ProxyTypes;
 using Il2CppQuantum;
 #endif
 
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.SpecialEquipmentSpawnPoint))]
+#endif
 public struct SpecialEquipmentSpawnPoint
 {
     public Vector3 position; //Field offset: 0x0

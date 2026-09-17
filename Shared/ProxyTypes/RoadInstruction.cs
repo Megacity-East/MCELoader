@@ -4,6 +4,9 @@ using Il2CppQuantum;
 #endif
 namespace MCELoader.Shared.ProxyTypes;
 
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.RoadInstruction))]
+#endif
 public struct RoadInstruction
 {
     public RoadInstructionType type; //Field offset: 0x0

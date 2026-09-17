@@ -1,11 +1,13 @@
 using UnityEngine;
-namespace MCELoader.Shared.ProxyTypes;
-
-
 #if MCELoader
 using Il2CppQuantum;
 #endif
 
+namespace MCELoader.Shared.ProxyTypes;
+
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.Arena))]
+#endif
 public struct Arena
 {
     public Transform transform; //Field offset: 0x0

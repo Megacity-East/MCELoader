@@ -1,5 +1,8 @@
 namespace MCELoader.Shared.ProxyTypes;
 
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.CurvePath))]
+#endif
 public struct CurvePath
 {
     public int ID; //Field offset: 0x0

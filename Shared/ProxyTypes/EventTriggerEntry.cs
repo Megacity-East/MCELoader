@@ -22,6 +22,9 @@ public enum EventTriggerType
 }
 #endif
 
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.EventTriggerEntry))]
+#endif
 public struct EventTriggerEntry
 {
     public int colliderIndex; //Field offset: 0x0

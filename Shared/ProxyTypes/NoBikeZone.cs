@@ -1,6 +1,9 @@
 using UnityEngine;
 namespace MCELoader.Shared.ProxyTypes;
 
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.NoBikesZone))]
+#endif
 public struct NoBikesZone
 {
     public Transform transform; //Field offset: 0x0

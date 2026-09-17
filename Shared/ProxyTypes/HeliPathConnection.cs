@@ -1,5 +1,8 @@
 namespace MCELoader.Shared.ProxyTypes;
 
+#if MCELoader
+[SourceType(typeof(Il2CppQuantum.HeliPathConnection))]
+#endif
 public struct HeliPathConnection
 {
     public int pathA; //Field offset: 0x0

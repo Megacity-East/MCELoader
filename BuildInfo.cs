@@ -1,6 +1,6 @@
 namespace MCELoader;
 
-public static class BuildInfo
+internal static class BuildInfo
 {
     public const string Author = "blankochan";
     public const string Name = "MegaCityEast Loader";

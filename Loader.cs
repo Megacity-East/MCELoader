@@ -1,8 +1,5 @@
 using MelonLoader.Utils;
-using System.IO.Compression;
-using Newtonsoft.Json;
-
-using MCELoader.Shared;
+using MelonLoader;
 
 using Il2CppQuantum;
 
