@@ -5,7 +5,7 @@ using Il2CppQuantum;
 namespace MCELoader.Shared.ProxyTypes;
 
 [SourceType(typeof(Il2CppQuantum.MapConfig))]
-public class MapConfig
+public class MapConfig : IAssetObject
 {
 #if MCEEditor
     public enum PoliceSpawn

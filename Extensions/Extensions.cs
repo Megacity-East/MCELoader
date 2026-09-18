@@ -16,10 +16,10 @@ public static class Extensions
     public static FPQuaternion ToQNative(this Quaternion quat) => new(quat.x.ToQNative(), quat.y.ToQNative(), quat.z.ToQNative(), quat.w.ToQNative());
 
     /// this one exists purely because of Quantum.RoadData and me not wanting to refactor the code gen
-    public static Il2CppSystem.Collections.Generic.List<int> ToQNative(this List<int> ints)
+    public static Il2CppSystem.Collections.Generic.List<T> ToQNative<T>(this List<T> items)
     {
-        Il2CppSystem.Collections.Generic.List<int> list = new(capacity: ints.Count);
-        foreach (int i in ints) list.Add(i);
+        Il2CppSystem.Collections.Generic.List<T> list = new(capacity: items.Count);
+        foreach (var i in items) list.Add(i);
         return list;
     }
 }

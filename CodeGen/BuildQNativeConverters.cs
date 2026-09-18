@@ -93,17 +93,16 @@ public class BuildQNativeConverters : IIncrementalGenerator
                     rightSideAssignment = $"proxy.{proxyField.Name}.Select(prox => prox.ToQNative()).ToArray()";
                 if (originalFieldType.SpecialType != SpecialType.None)
                     rightSideAssignment = $"proxy.{proxyField.Name}";
-                if (proxyField.Type.ToString() == "int[]") // HACK fix
+                if (proxyField.Type.ToString() is "int[]") // HACK fix
                     rightSideAssignment = $"proxy.{proxyField.Name}";
                 if (proxyField.Type.TypeKind == TypeKind.Enum)
                     rightSideAssignment = $"proxy.{proxyField.Name}";
 
                 body += $"{proxyField.Name} = {rightSideAssignment},\n";
 
-                if (proxyField.Type.TypeKind == TypeKind.Array)
+                if (true)
                 {
-
-                    //body += $"#warning {rightSideAssignment}\n";
+                    //                    body += $"#warning {proxyField.ContainingType}::{proxyField.Name} is {originalFieldType} being treated as {proxyField.Type}\n";
                 }
             }
 
