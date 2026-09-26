@@ -23,7 +23,7 @@ public static class Loader
 
     public static string GetMapLoadPath(Il2CppQuantum.LevelID levelID)
     {
-        return Path.Combine(ResourceManager.MCEBasePath, "MCETestMap"); // TODO Implement
+        return Path.Combine(ResourceManager.MCEBasePath, LoadedMaps.First().Manifest.Name); // TODO Implement
     }
 
     public struct MapWrapper
