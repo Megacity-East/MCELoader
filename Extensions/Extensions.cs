@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.IO.Compression;
 using Il2CppQuantum;
 using Il2CppPhoton.Deterministic;
 
@@ -8,18 +9,32 @@ public static class Extensions
 {
     public static bool IsCustomMap(this LevelID levelID) => (int)levelID >= 100;
 
-    /// Quantum Types
-    public static Transform3D ToQNative(this Transform transform) => new() { Position = transform.position.ToQNative(), Rotation = transform.rotation.ToQNative() };
-    public static FP ToQNative(this float flt) => FP.FromFloat_UNSAFE(flt);
-    public static FPVector2 ToQNative(this Vector2 vec) => new(vec.x.ToQNative(), vec.y.ToQNative());
-    public static FPVector3 ToQNative(this Vector3 vec) => new(vec.x.ToQNative(), vec.y.ToQNative(), vec.z.ToQNative());
-    public static FPQuaternion ToQNative(this Quaternion quat) => new(quat.x.ToQNative(), quat.y.ToQNative(), quat.z.ToQNative(), quat.w.ToQNative());
+    //  public static Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<T> ToArray<T>(this IEnumerable<T> enumerable) where T : unmanaged
+    //  {
+    //      int length = enumerable.Count();
+    //      Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppStructArray<T> array = new(length);
+    //
+    //      int index = 0;
+    //      foreach (T element in enumerable)
+    //      {
+    //          array[index] = element;
+    //          index++;
+    //      }
+    //      return array;
+    //  }
 
-    /// this one exists purely because of Quantum.RoadData and me not wanting to refactor the code gen
-    public static Il2CppSystem.Collections.Generic.List<T> ToQNative<T>(this List<T> items)
+#nullable enable
+    public static Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<T> ToArray<T>(this IEnumerable<T> enumerable) where T : Il2CppInterop.Runtime.InteropTypes.Il2CppObjectBase?
     {
-        Il2CppSystem.Collections.Generic.List<T> list = new(capacity: items.Count);
-        foreach (var i in items) list.Add(i);
-        return list;
+        int length = enumerable.Count();
+        Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<T> array = new(length);
+
+        int index = 0;
+        foreach (T element in enumerable)
+        {
+            array[index] = element;
+            index++;
+        }
+        return array;
     }
 }

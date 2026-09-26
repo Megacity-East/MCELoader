@@ -1,0 +1,23 @@
+
+using UnityEngine;
+using Il2CppQuantum;
+using Il2CppPhoton.Deterministic;
+
+namespace MCELoader.Extensions;
+
+public static class QuantumExtensions
+{
+    public static FP ToQNative(this float flt) => FP.FromFloat_UNSAFE(flt);
+    public static FPVector2 ToQNative(this Vector2 vec) => new(vec.x.ToQNative(), vec.y.ToQNative());
+    public static FPVector3 ToQNative(this Vector3 vec) => new(vec.x.ToQNative(), vec.y.ToQNative(), vec.z.ToQNative());
+    public static FPQuaternion ToQNative(this Quaternion quat) => new(quat.x.ToQNative(), quat.y.ToQNative(), quat.z.ToQNative(), quat.w.ToQNative());
+    public static Transform3D ToQNative(this Transform transform) => new() { Position = transform.position.ToQNative(), Rotation = transform.rotation.ToQNative() };
+
+    /// this one exists purely because of Quantum.RoadData and me not wanting to refactor the code gen
+    public static Il2CppSystem.Collections.Generic.List<T> ToQNative<T>(this List<T> items)
+    {
+        Il2CppSystem.Collections.Generic.List<T> list = new(capacity: items.Count);
+        foreach (var i in items) list.Add(i);
+        return list;
+    }
+}

@@ -1,11 +1,13 @@
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Text.RegularExpressions;
 using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
 namespace MCELoader.CodeGen;
 
 [Generator]
 public class BuildQNativeConverters : IIncrementalGenerator
 {
+
     public void Initialize(Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext context)
     {
         var provider = context.SyntaxProvider.CreateSyntaxProvider(
@@ -34,6 +36,8 @@ public class BuildQNativeConverters : IIncrementalGenerator
         var compilation = context.CompilationProvider.Combine(provider.Collect());
         context.RegisterSourceOutput(compilation, Execute);
     }
+
+
     public void Execute(SourceProductionContext context, (Compilation comp, ImmutableArray<TypeDeclarationSyntax> syntaxes) tuple)
     {
         var (comp, syntaxes) = tuple;
@@ -72,43 +76,56 @@ public class BuildQNativeConverters : IIncrementalGenerator
             var originalMembers = originalType.GetMembers().Where(member => member.Kind is SymbolKind.Field or SymbolKind.Property);
             var proxyFields = proxyType.GetMembers().Where(member => member.Kind == SymbolKind.Field).Select(field => (IFieldSymbol)field);
 
-            string signature = $"public static {originalTypeMetadataName} ToQNative(this {declarationSymbol.ToString()} proxy)";
-            Dictionary<string, ITypeSymbol> originalTypeMap = new();
-            foreach (var member in originalMembers) // i spent like 3 hours figuring this out and i dont even remember why
+
+            Dictionary<string, ITypeSymbol> originalMemberTypeMap = new();
+            foreach (var member in originalMembers)
             {
                 if (member.Kind == SymbolKind.Property)
-                    originalTypeMap[member.Name] = ((IPropertySymbol)member).Type;
+                {
+                    IPropertySymbol propertySymbol = (IPropertySymbol)member;
+                    originalMemberTypeMap[member.Name] = propertySymbol.Type;
+
+                }
+
                 if (member.Kind == SymbolKind.Field)
-                    originalTypeMap[member.Name] = ((IFieldSymbol)member).Type;
+                {
+                    IFieldSymbol fieldSymbol = (IFieldSymbol)member;
+                    originalMemberTypeMap[member.Name] = fieldSymbol.Type;
+                }
             }
 
+            string signature = $"public static {originalTypeMetadataName} ToQNative(this {declarationSymbol.ToString()} proxy)";
             string body = "{\n";
-            body += $"return new {originalTypeMetadataName}(){{\n";
+
+            if (originalType.BaseType.ToString() == "Il2CppQuantum.AssetObject")
+                body += $"var qnative = Il2CppQuantum.AssetObject.Create<{originalTypeMetadataName}>();\n";
+            else
+                body += $"var qnative = new {originalTypeMetadataName}();\n";
 
             foreach (var proxyField in proxyFields) // GENERATION TIME RAHh!!!!
             {
-                var originalFieldType = originalTypeMap[proxyField.Name];
+                var originalMemberType = originalMemberTypeMap[proxyField.Name];
+
                 string rightSideAssignment = $"proxy.{proxyField.Name}.ToQNative()";
                 if (proxyField.Type.TypeKind == TypeKind.Array)
                     rightSideAssignment = $"proxy.{proxyField.Name}.Select(prox => prox.ToQNative()).ToArray()";
-                if (originalFieldType.SpecialType != SpecialType.None)
+                if (originalMemberType.SpecialType != SpecialType.None)
                     rightSideAssignment = $"proxy.{proxyField.Name}";
                 if (proxyField.Type.ToString() is "int[]") // HACK fix
                     rightSideAssignment = $"proxy.{proxyField.Name}";
                 if (proxyField.Type.TypeKind == TypeKind.Enum)
                     rightSideAssignment = $"proxy.{proxyField.Name}";
 
-                body += $"{proxyField.Name} = {rightSideAssignment},\n";
+                body += $"qnative.{proxyField.Name} = {rightSideAssignment};\n";
 
-                if (true)
+                if (false)//proxyField.Name == "PhysicsMaterial")
                 {
-                    //                    body += $"#warning {proxyField.ContainingType}::{proxyField.Name} is {originalFieldType} being treated as {proxyField.Type}\n";
+
+                    //body += $"#warning {originalType}::{proxyField.Name} = {match.Success} {match.Value}\n";
                 }
             }
-
-            body += @"};
-    }
-    ";
+            body += "return qnative;";
+            body += "\n}";
 
 
             generatedMembers += "[System.Runtime.CompilerServices.CompilerGenerated]\n" + signature + body;

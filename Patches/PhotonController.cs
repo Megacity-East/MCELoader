@@ -14,8 +14,7 @@ public static class PhotonController__patches
     [HarmonyPatch(nameof(PhotonController.TryGetMapPath))]
     public static bool TryGetMapPath__prefix(PhotonController __instance, bool __result, LevelID levelID, ref String mapPath)
     {
-        MCEMain.Logger.Msg("TryGetMapPath__prefix");
-        if (levelID.IsCustomMap())
+        if (levelID is LevelID.WAREHOUSE) //levelID.IsCustomMap())
         {
             mapPath = Loader.GetMapLoadPath(levelID);
             __result = true;
