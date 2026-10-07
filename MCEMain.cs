@@ -24,10 +24,7 @@ public class MCEMain : MelonMod
         if (ResourceManager.TryGetPathFromName(sceneName, out string path))
         {
             Loader.MapWrapper wrapper = Loader.LoadedMaps.First(wrapper => wrapper.Map.ScenePath == path);
-
-            Loader.HandleCustomMapLoad(Il2CppQuantum.QuantumUnityDB.GetGlobalAsset<Il2CppQuantum.Map>(wrapper.MapRef));
-
-
+            Loader.HandleCustomMapLoad(wrapper);
 
         }
     }

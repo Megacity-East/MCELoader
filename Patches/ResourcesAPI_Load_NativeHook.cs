@@ -26,8 +26,7 @@ public static class ResourcesAPI_Load_NativeHook
         string path = IL2CPP.Il2CppStringToManaged(pathPtr);
         if (MCELoader.ResourceManager.TryGetResource(path, out var asset))
         {
-            MCEMain.Logger.Msg("Sending replacement asset");
-            return ((Il2CppSystem.Object)asset).Pointer;
+            return ((UnityEngine.Object)asset).Pointer;
         }
         else
         {

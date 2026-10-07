@@ -43,12 +43,11 @@ public static class ResourceManager
     }
     public static AssetGuid RegisterQuantumResource(string path, AssetObject resource)
     {
-        string quantumPath = Path.Combine(QuantumResourceBasePath, path);
 
         if (resource.name == String.Empty)
             resource.name = Path.GetFileName(path);
 
-        resource.Path = quantumPath;
+        resource.Path = path;
         AssetGuid guid = QuantumUnityDB.CreateRuntimeDeterministicGuid(resource);
         resource.Guid = guid;
 

@@ -1,12 +1,12 @@
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
-using Il2CppCustomCharacters;
 using System.IO.Compression;
 using Il2CppView_Traffic;
 using MelonLoader.Utils;
 using Il2CppView_Main;
 using Newtonsoft.Json;
 using Il2CppQuantum;
+using MelonLoader;
 using UnityEngine;
 
 using MCELoader.Shared;
@@ -35,6 +35,7 @@ public static class Loader
         public AssetGuid MapRef;
         public AssetGuid MapConfigRef;
         public AssetBundle SceneBundle;
+        public AssetBundle AssetsBundle;
 
     }
 
@@ -61,12 +62,14 @@ public static class Loader
                 ZipArchiveEntry mapEntry = archive.GetEntry("Map.json");
                 ZipArchiveEntry mapConfigEntry = archive.GetEntry("MapConfig.json");
                 ZipArchiveEntry sceneEntry = archive.GetEntry("scene");
+                ZipArchiveEntry assetsEntry = archive.GetEntry("assets");
 
 
                 string manifestJson = manifestEntry.OpenText();
                 string mapJson = mapEntry.OpenText();
                 string mapConfigJson = mapConfigEntry.OpenText();
                 Stream sceneStream = sceneEntry.Open();
+                Stream assetsStream = assetsEntry.Open();
 
                 AssetBundle sceneBundle;
                 using (var memoryStream = new MemoryStream())
@@ -76,6 +79,14 @@ public static class Loader
                 }
                 sceneStream.Close();
 
+                AssetBundle assetsBundle;
+                using (var memoryStream = new MemoryStream())
+                {
+                    assetsStream.CopyTo(memoryStream);
+                    assetsBundle = AssetBundle.LoadFromMemory(memoryStream.ToArray());
+                }
+                assetsStream.Close();
+
 
                 MCEManifest manifest = JsonConvert.DeserializeObject<MCEManifest>(manifestJson, settings: JsonUtils.SerializerSettings);
 
@@ -84,7 +95,6 @@ public static class Loader
 
                 Map mapQNative = mapProxy.ToQNative(); // ToQNative is generated at build time (comments here incase your lsp is bitching)
                 MapConfig mapConfigQNative = mapConfigProxy.ToQNative(); // ToQNative is generated at build time (comments here incase your lsp is bitching)
-
 
                 mapConfigQNative.levelID = LevelID.none; // TODO: REPLACE WITH SOME BETTER LOGIC!!!
 
@@ -110,6 +120,7 @@ public static class Loader
                     MapRef = mapQNative.Guid,
                     MapConfigRef = mapConfigQNative.Guid,
                     SceneBundle = sceneBundle,
+                    AssetsBundle = assetsBundle,
                 };
 
                 LoadedMaps.Add(wrapper);
@@ -139,8 +150,12 @@ public static class Loader
         return content;
     }
 
-    public static void HandleCustomMapLoad(Map quantumMap)
+
+
+    public static void HandleCustomMapLoad(MapWrapper wrapper)
     {
+        Map quantumMap = QuantumUnityDB.GetGlobalAsset<Map>(wrapper.MapRef);
+
         GameObject airframeGame = _airframeGame;
         ViewResources.instance = Resources.Load<ViewResources>("ViewResources");
         new LOD_Culling(); // its constructor sets LOD_Culling.instance, which alot of view stuff uses
@@ -149,7 +164,7 @@ public static class Loader
 
         Il2CppQuantum.QuantumMapData mapData = airframeGame.GetComponent<Il2CppQuantum.QuantumMapData>();
         mapData.AssetRef = quantumMap;
-        mapData.StaticCollider3DReferences.Clear(); // Unused
+        mapData.StaticCollider3DReferences.Clear(); // Unused at runtime
 
         mapData.MapEntityReferences.Clear(); // NOTE: Important!, Currently unclear to me if this sets the simulation or the simulation sets this!
 
@@ -168,10 +183,6 @@ public static class Loader
         }
 
         airframeGame.active = true;
-
-
-
-
     }
 
     public static System.Collections.IEnumerator StealAirframeGameCoroutine()
@@ -201,7 +212,7 @@ public static class Loader
         _airframeGame.name = "AirframeGame_MCELoader";
 
         GameObject.DontDestroyOnLoad(_airframeGame);
-
         Addressables.UnloadScene(loadOp.Result);
     }
+
 }
