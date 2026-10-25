@@ -35,6 +35,16 @@
                       SetTargetFramework="TargetFramework=netstandard2.0" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>obj\generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(DesignTimeBuild)' == 'true'">
+    <Compile Include="obj\generated\**\*.cs" />
+  </ItemGroup>
+
+
   <ItemGroup>
     <Content Remove="$(ProjectDir)/CodeGen/**" />
     <Compile Remove="$(ProjectDir)/CodeGen/**" />
