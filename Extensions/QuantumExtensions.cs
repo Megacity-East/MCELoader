@@ -13,6 +13,16 @@ public static class QuantumExtensions
     public static FPQuaternion ToQNative(this Quaternion quat) => new(quat.x.ToQNative(), quat.y.ToQNative(), quat.z.ToQNative(), quat.w.ToQNative());
     public static Transform3D ToQNative(this Transform transform) => new() { Position = transform.position.ToQNative(), Rotation = transform.rotation.ToQNative() };
 
+
+    public static NullableFP ToQNative(this float? flt)
+    {
+        if (flt != null)
+        {
+            return FP.FromFloat_UNSAFE(flt.Value);
+        }
+        return new();
+    }
+
     /// this one exists purely because of Quantum.RoadData and me not wanting to refactor the code gen
     public static Il2CppSystem.Collections.Generic.List<T> ToQNative<T>(this List<T> items)
     {
