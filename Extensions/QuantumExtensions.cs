@@ -7,10 +7,12 @@ namespace MCELoader.Extensions;
 
 public static class QuantumExtensions
 {
+    public static QBoolean ToQNative(this bool boolean) => new() { Value = Convert.ToInt32(boolean) };
+
     public static FP ToQNative(this float flt) => FP.FromFloat_UNSAFE(flt);
-    public static FPVector2 ToQNative(this Vector2 vec) => new(vec.x.ToQNative(), vec.y.ToQNative());
-    public static FPVector3 ToQNative(this Vector3 vec) => new(vec.x.ToQNative(), vec.y.ToQNative(), vec.z.ToQNative());
-    public static FPQuaternion ToQNative(this Quaternion quat) => new(quat.x.ToQNative(), quat.y.ToQNative(), quat.z.ToQNative(), quat.w.ToQNative());
+    public static FPVector2 ToQNative(this Vector2 vec) => vec.ToFPVector2();
+    public static FPVector3 ToQNative(this Vector3 vec) => vec.ToFPVector3();
+    public static FPQuaternion ToQNative(this Quaternion quat) => quat.ToFPQuaternion();
     public static Transform3D ToQNative(this Transform transform) => new() { Position = transform.position.ToQNative(), Rotation = transform.rotation.ToQNative() };
 
 
