@@ -68,9 +68,8 @@ public static class Loader
                 string manifestJson = manifestEntry.OpenText();
                 string mapJson = mapEntry.OpenText();
                 string mapConfigJson = mapConfigEntry.OpenText();
-                Stream sceneStream = sceneEntry.Open();
-                Stream assetsStream = assetsEntry.Open();
 
+                Stream sceneStream = sceneEntry.Open();
                 AssetBundle sceneBundle;
                 using (var memoryStream = new MemoryStream())
                 {
@@ -79,14 +78,18 @@ public static class Loader
                 }
                 sceneStream.Close();
 
-                AssetBundle assetsBundle;
-                using (var memoryStream = new MemoryStream())
+                AssetBundle assetsBundle = null;
+                if (assetsEntry != null)
                 {
-                    assetsStream.CopyTo(memoryStream);
-                    assetsBundle = AssetBundle.LoadFromMemory(memoryStream.ToArray());
-                }
-                assetsStream.Close();
 
+                    Stream assetsStream = assetsEntry.Open();
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        assetsStream.CopyTo(memoryStream);
+                        assetsBundle = AssetBundle.LoadFromMemory(memoryStream.ToArray());
+                    }
+                    assetsStream.Close();
+                }
 
                 MCEManifest manifest = JsonConvert.DeserializeObject<MCEManifest>(manifestJson, settings: JsonUtils.SerializerSettings);
 
