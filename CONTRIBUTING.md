@@ -7,6 +7,7 @@ We extend a brief olive branch when a developer looks something up, and gets an 
 
 Similarly if a developers IDE is forcing AI code suggestions, its acceptable (an example being JetBrains Rider's autocomplete);
 but if you're just using Codex, Claude Code, Copilot or similar, **We don't want your LLMs code.**
+<img width="1824" height="107" alt="poweredbyhumansuffering" src="https://github.com/user-attachments/assets/64a44134-2c2c-420d-81aa-bd9cef7a6b27" />
 
 ## 2. No redistributing [Airframe Ultra's](https://store.steampowered.com/app/2522120/Airframe_Ultra/) assets (such as textures or models)
 This is largely because I've been unable to get permission from Akupara or Videocult to do this.
